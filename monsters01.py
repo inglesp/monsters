@@ -1,32 +1,36 @@
 def describe(monster):
-    if monster['hit_points'] > 0:
-        print('{} is a {} with {} hit points'.format(monster['name'], monster['species'], monster['hit_points']))
+    if monster["hit_points"] > 0:
+        print(
+            "{} is a {} with {} hit points".format(
+                monster["name"], monster["species"], monster["hit_points"]
+            )
+        )
     else:
-        print('{} is a dead {}'.format(monster['name'], monster['species']))
+        print("{} is a dead {}".format(monster["name"], monster["species"]))
 
 
 def damage(monster, damage_points):
-    if monster['hit_points'] > 0:
-        monster['hit_points'] -= damage_points
-        if monster['hit_points'] <= 0:
-            print('{} is dead'.format(monster['name']))
+    if monster["hit_points"] > 0:
+        monster["hit_points"] -= damage_points
+        if monster["hit_points"] <= 0:
+            print("{} is dead".format(monster["name"]))
     else:
-        print('{} is already dead'.format(monster['name']))
+        print("{} is already dead".format(monster["name"]))
 
 
 def heal(monster):
-    if monster['hit_points'] > 0:
-        monster['hit_points'] = initial_hit_points(monster)
+    if monster["hit_points"] > 0:
+        monster["hit_points"] = initial_hit_points(monster)
     else:
-        print('A dead monster cannot be healed')
+        print("A dead monster cannot be healed")
 
 
 def initial_hit_points(monster):
-    if monster['species'] == 'Giant':
+    if monster["species"] == "Giant":
         return 10
-    elif monster['species'] == 'Dragon':
+    elif monster["species"] == "Dragon":
         return 20
-    elif monster['species'] == 'Wyvern':
+    elif monster["species"] == "Wyvern":
         return 15
     else:
         # This is a way of telling Python "this should never happen"
@@ -34,41 +38,41 @@ def initial_hit_points(monster):
 
 
 def attack(monster, other_monster):
-    if monster['hit_points'] > 0:
-        print('{} attacks {}'.format(monster['name'], other_monster['name']))
+    if monster["hit_points"] > 0:
+        print("{} attacks {}".format(monster["name"], other_monster["name"]))
         damage(other_monster, attack_points(monster))
     else:
-        print('A dead monster cannot attack')
+        print("A dead monster cannot attack")
 
 
 def attack_points(monster):
-    if monster['species'] == 'Giant':
+    if monster["species"] == "Giant":
         return 3
-    elif monster['species'] == 'Dragon':
+    elif monster["species"] == "Dragon":
         return 4
-    elif monster['species'] == 'Wyvern':
+    elif monster["species"] == "Wyvern":
         return 5
     else:
         assert False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     gerald = {
-        'name': 'Gerald',
-        'species': 'Giant',
-        'hit_points': 10,
+        "name": "Gerald",
+        "species": "Giant",
+        "hit_points": 10,
     }
 
     debbie = {
-        'name': 'Debbie',
-        'species': 'Dragon',
-        'hit_points': 20,
+        "name": "Debbie",
+        "species": "Dragon",
+        "hit_points": 20,
     }
 
     wallace = {
-        'name': 'Wallace',
-        'species': 'Wyvern',
-        'hit_points': 15,
+        "name": "Wallace",
+        "species": "Wyvern",
+        "hit_points": 15,
     }
 
     describe(gerald)

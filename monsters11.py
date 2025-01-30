@@ -6,9 +6,13 @@ class Monster(object):
 
     def describe(self):
         if self.is_alive():
-            print('{} is a {} with {} hit points'.format(self.name, self.species, self.hit_points))
+            print(
+                "{} is a {} with {} hit points".format(
+                    self.name, self.species, self.hit_points
+                )
+            )
         else:
-            print('{} is a dead {}'.format(self.name, self.species))
+            print("{} is a dead {}".format(self.name, self.species))
 
     def is_alive(self):
         return self.hit_points > 0
@@ -17,22 +21,22 @@ class Monster(object):
         if self.is_alive():
             self.hit_points -= damage_points
             if not self.is_alive():
-                print('{} is dead'.format(self.name))
+                print("{} is dead".format(self.name))
         else:
-            print('{} is already dead'.format(self.name))
+            print("{} is already dead".format(self.name))
 
     def heal(self):
         if self.is_alive():
             self.hit_points = self.initial_hit_points
         else:
-            print('A dead self cannot be healed')
+            print("A dead self cannot be healed")
 
     def attack(self, other):
         if self.is_alive():
             self.describe_attack(other)
             other.damage(self.attack_points)
         else:
-            print('A dead self cannot attack')
+            print("A dead self cannot attack")
 
 
 class Giant(Monster):
@@ -40,7 +44,7 @@ class Giant(Monster):
     attack_points = 3
 
     def describe_attack(self, other):
-        print('{} swings a club at {}'.format(self.name, other.name))
+        print("{} swings a club at {}".format(self.name, other.name))
 
 
 class Dragon(Monster):
@@ -48,7 +52,7 @@ class Dragon(Monster):
     attack_points = 4
 
     def describe_attack(self, other):
-        print('{} breathes fire on {}'.format(self.name, other.name))
+        print("{} breathes fire on {}".format(self.name, other.name))
 
 
 class Wyvern(Monster):
@@ -56,13 +60,13 @@ class Wyvern(Monster):
     attack_points = 5
 
     def describe_attack(self, other):
-        print('{} swipes at {} with its tail'.format(monster.name, other_monster.name))
+        print("{} swipes at {} with its tail".format(monster.name, other_monster.name))
 
 
-if __name__ == '__main__':
-    gerald = Giant('Gerald')
-    debbie = Dragon('Debbie')
-    wallace = Wyvern('Wallace')
+if __name__ == "__main__":
+    gerald = Giant("Gerald")
+    debbie = Dragon("Debbie")
+    wallace = Wyvern("Wallace")
 
     gerald.describe()
     debbie.describe()
