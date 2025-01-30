@@ -1,87 +1,70 @@
+# This module contains a few functions that operate on dictionaries that
+# contain information about individual monsters.
+
 def describe(monster):
+    print(f"{monster['name']} is a ", end="")
     if monster["hit_points"] > 0:
-        print(
-            "{} is a {} with {} hit points".format(
-                monster["name"], monster["species"], monster["hit_points"]
-            )
-        )
+        print(f"{monster['species']} with {monster['hit_points']} hit points")
     else:
-        print("{} is a dead {}".format(monster["name"], monster["species"]))
-
-
-def damage(monster, damage_points):
-    if monster["hit_points"] > 0:
-        monster["hit_points"] -= damage_points
-        if monster["hit_points"] <= 0:
-            print("{} is dead".format(monster["name"]))
-    else:
-        print("{} is already dead".format(monster["name"]))
-
-
-def heal(monster):
-    if monster["hit_points"] > 0:
-        monster["hit_points"] = initial_hit_points(monster)
-    else:
-        print("A dead monster cannot be healed")
-
-
-def initial_hit_points(monster):
-    if monster["species"] == "Giant":
-        return 10
-    elif monster["species"] == "Dragon":
-        return 20
-    elif monster["species"] == "Wyvern":
-        return 15
-    else:
-        # This is a way of telling Python "this should never happen"
-        assert False
+        print(f"dead {monster['species']}")
 
 
 def attack(monster, other_monster):
     if monster["hit_points"] > 0:
-        print("{} attacks {}".format(monster["name"], other_monster["name"]))
+        print(f"{monster['name']} attacks {other_monster['name']}")
         damage(other_monster, attack_points(monster))
     else:
         print("A dead monster cannot attack")
 
 
+def damage(monster, damage_points):
+    if monster["hit_points"] > 0:
+        monster["hit_points"] -= damage_points
+        if monster["hit_points"] > 0:
+            print(f"{monster['name']} now has {monster['hit_points']} hit points")
+        else:
+            print(f"{monster['name']} is dead :(")
+    else:
+        print(f"{monster['name']} is already dead")
+
+
 def attack_points(monster):
-    if monster["species"] == "Giant":
-        return 3
-    elif monster["species"] == "Dragon":
+    if monster["species"] == "dragon":
         return 4
-    elif monster["species"] == "Wyvern":
+    elif monster["species"] == "giant":
+        return 3
+    elif monster["species"] == "wyvern":
         return 5
     else:
+        # This is a way of telling Python "this should never happen"
         assert False
 
 
 if __name__ == "__main__":
     gerald = {
         "name": "Gerald",
-        "species": "Giant",
+        "species": "giant",
         "hit_points": 10,
     }
 
     debbie = {
         "name": "Debbie",
-        "species": "Dragon",
+        "species": "dragon",
         "hit_points": 20,
-    }
-
-    wallace = {
-        "name": "Wallace",
-        "species": "Wyvern",
-        "hit_points": 15,
     }
 
     describe(gerald)
     describe(debbie)
+    print("-" * 80)
     attack(debbie, gerald)
+    print("-" * 80)
     attack(gerald, debbie)
+    print("-" * 80)
     attack(debbie, gerald)
+    print("-" * 80)
     attack(gerald, debbie)
+    print("-" * 80)
     attack(debbie, gerald)
-    attack(gerald, debbie)
+    print("-" * 80)
     describe(gerald)
     describe(debbie)

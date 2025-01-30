@@ -1,88 +1,89 @@
-class Monster(object):
+# In this module we change how we call methods.
+#
+# When methods take, as a first parameter, an instance of the class on which
+# they are defined, it is more usual to call the method by looking up the
+# method as if it were an attribute on the instance, and then calling it as it
+# were a function.
+#
+# That is, if object i is an instance of class C, then these are equivalent:
+#
+#   C.method(instance, argument)
+#   i.method(argument)
+
+# See the full changes with:
+#
+#   $ diff monsters05.py monsters06.py
+
+
+class Monster:
     def __init__(monster, name, species):
         monster.name = name
         monster.species = species
-        monster.hit_points = monster.initial_hit_points()
+        monster.hit_points = Monster.initial_hit_points(species)
 
     def describe(monster):
-        if monster.is_alive():
-            print(
-                "{} is a {} with {} hit points".format(
-                    monster.name, monster.species, monster.hit_points
-                )
-            )
+        print(f"{monster.name} is a ", end="")
+        if monster.hit_points > 0:
+            print(f"{monster.species} with {monster.hit_points} hit points")
         else:
-            print("{} is a dead {}".format(monster.name, monster.species))
-
-    def is_alive(monster):
-        return monster.hit_points > 0
-
-    def damage(monster, damage_points):
-        if monster.is_alive():
-            monster.hit_points -= damage_points
-            if not monster.is_alive():
-                print("{} is dead".format(monster.name))
-        else:
-            print("{} is already dead".format(monster.name))
-
-    def heal(monster):
-        if monster.is_alive():
-            monster.hit_points = monster.initial_hit_points()
-        else:
-            print("A dead monster cannot be healed")
+            print(f"dead {monster.species}")
 
     def attack(monster, other_monster):
-        if monster.is_alive():
-            if monster.species == "Giant":
-                print("{} swings a club at {}".format(monster.name, other_monster.name))
-            elif monster.species == "Dragon":
-                print("{} breathes fire on {}".format(monster.name, other_monster.name))
-            elif monster.species == "Wyvern":
-                print(
-                    "{} swipes at {} with its tail".format(
-                        monster.name, other_monster.name
-                    )
-                )
-            else:
-                assert False
-
+        if monster.hit_points > 0:
+            print(f"{monster.name} attacks {other_monster.name}")
             other_monster.damage(monster.attack_points())
         else:
             print("A dead monster cannot attack")
 
-    def initial_hit_points(monster):
-        if monster.species == "Giant":
-            return 10
-        elif monster.species == "Dragon":
+    def damage(monster, damage_points):
+        if monster.hit_points > 0:
+            monster.hit_points -= damage_points
+            if monster.hit_points > 0:
+                print(f"{monster.name} now has {monster.hit_points} hit points")
+            else:
+                print(f"{monster.name} is dead :(")
+        else:
+            print(f"{monster.name} is already dead")
+
+    def attack_points(monster):
+        if monster.species == "dragon":
+            return 4
+        elif monster.species == "giant":
+            return 3
+        elif monster.species == "wyvern":
+            return 5
+        else:
+            # This is a way of telling Python "this should never happen"
+            assert False
+
+    def initial_hit_points(species):
+        if species == "dragon":
             return 20
-        elif monster.species == "Wyvern":
+        elif species == "giant":
+            return 10
+        elif species == "wyvern":
             return 15
         else:
             assert False
 
-    def attack_points(monster):
-        if monster.species == "Giant":
-            return 3
-        elif monster.species == "Dragon":
-            return 4
-        elif monster.species == "Wyvern":
-            return 5
-        else:
-            assert False
 
 
 if __name__ == "__main__":
-    gerald = Monster("Gerald", "Giant")
-    debbie = Monster("Debbie", "Dragon")
-    wallace = Monster("Wallace", "Wyvern")
+    gerald = Monster("Gerald", "giant")
+    debbie = Monster("Debbie", "dragon")
 
     gerald.describe()
     debbie.describe()
+    print("-" * 80)
     debbie.attack(gerald)
+    print("-" * 80)
     gerald.attack(debbie)
+    print("-" * 80)
     debbie.attack(gerald)
+    print("-" * 80)
     gerald.attack(debbie)
+    print("-" * 80)
     debbie.attack(gerald)
-    gerald.attack(debbie)
+    print("-" * 80)
     gerald.describe()
     debbie.describe()

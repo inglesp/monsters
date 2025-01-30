@@ -1,80 +1,111 @@
-class Monster(object):
-    def __init__(self, name):
-        self.name = name
-        self.species = type(self).__name__
-        self.hit_points = self.initial_hit_points
+# In this module we introduce class variables.
+#
+# These are variables that are defined in the body of a class definition.  They
+# can be accessed either as attributes of a class, or as attributes of an
+# instance of a class:
+#
+#   >>> import monsters11
+#   >>> monsters11.Dragon.attack_points
+#   4
+#   >>> d = monsters11.Dragon("Debbie")
+#   >>> d.attack_points
+#   4
+#
+# attack_points is not in d's dictionary of attributes:
+#
+#   >>> d.__dict__
+#   {'name': 'Debbie', 'species': 'dragon', 'hit_points': 20}
+#
+# But classes also have dictionaries of attributes, and it is there:
+#
+#   >>> monsters11.Dragon.__dict__
+#   mappingproxy({'__module__': 'monsters11', 'attack_points': 4, '__init__': <function Dragon.__init__ at 0x7c73dc2bda20>, 'describe_attack': <function Dragon.describe_attack at 0x7c73dc2bdab0>, '__doc__': None})
+#
+# (What else can you see there?)
 
-    def describe(self):
-        if self.is_alive():
-            print(
-                "{} is a {} with {} hit points".format(
-                    self.name, self.species, self.hit_points
-                )
-            )
+# See the full changes with:
+#
+#   $ diff monsters10.py monsters11.py
+
+
+class Monster:
+    def describe(monster):
+        print(f"{monster.name} is a ", end="")
+        if monster.hit_points > 0:
+            print(f"{monster.species} with {monster.hit_points} hit points")
         else:
-            print("{} is a dead {}".format(self.name, self.species))
+            print(f"dead {monster.species}")
 
-    def is_alive(self):
-        return self.hit_points > 0
-
-    def damage(self, damage_points):
-        if self.is_alive():
-            self.hit_points -= damage_points
-            if not self.is_alive():
-                print("{} is dead".format(self.name))
+    def attack(monster, other_monster):
+        if monster.hit_points > 0:
+            monster.describe_attack(other_monster)
+            other_monster.damage(monster.attack_points)
         else:
-            print("{} is already dead".format(self.name))
+            print("A dead monster cannot attack")
 
-    def heal(self):
-        if self.is_alive():
-            self.hit_points = self.initial_hit_points
+    def damage(monster, damage_points):
+        if monster.hit_points > 0:
+            monster.hit_points -= damage_points
+            if monster.hit_points > 0:
+                print(f"{monster.name} now has {monster.hit_points} hit points")
+            else:
+                print(f"{monster.name} is dead :(")
         else:
-            print("A dead self cannot be healed")
-
-    def attack(self, other):
-        if self.is_alive():
-            self.describe_attack(other)
-            other.damage(self.attack_points)
-        else:
-            print("A dead self cannot attack")
-
-
-class Giant(Monster):
-    initial_hit_points = 10
-    attack_points = 3
-
-    def describe_attack(self, other):
-        print("{} swings a club at {}".format(self.name, other.name))
+            print(f"{monster.name} is already dead")
 
 
 class Dragon(Monster):
-    initial_hit_points = 20
     attack_points = 4
 
-    def describe_attack(self, other):
-        print("{} breathes fire on {}".format(self.name, other.name))
+    def __init__(monster, name):
+        monster.name = name
+        monster.species = "dragon"
+        monster.hit_points = 20
+
+    def describe_attack(monster, other_monster):
+        print(f"{monster.name} breathes fire on {other_monster.name}")
+
+
+class Giant(Monster):
+    attack_points = 3
+
+    def __init__(monster, name):
+        monster.name = name
+        monster.species = "giant"
+        monster.hit_points = 10
+
+    def describe_attack(monster, other_monster):
+        print(f"{monster.name} swings a club at {other_monster.name}")
 
 
 class Wyvern(Monster):
-    initial_hit_points = 15
     attack_points = 5
 
-    def describe_attack(self, other):
-        print("{} swipes at {} with its tail".format(monster.name, other_monster.name))
+    def __init__(monster, name):
+        monster.name = name
+        monster.species = "wyvern"
+        monster.hit_points = 15
+
+    def describe_attack(monster, other_monster):
+        print(f"{monster.name} swipes at {other_monster.name} with its tail")
 
 
 if __name__ == "__main__":
     gerald = Giant("Gerald")
     debbie = Dragon("Debbie")
-    wallace = Wyvern("Wallace")
 
     gerald.describe()
     debbie.describe()
+    print("-" * 80)
     debbie.attack(gerald)
+    print("-" * 80)
     gerald.attack(debbie)
+    print("-" * 80)
     debbie.attack(gerald)
+    print("-" * 80)
     gerald.attack(debbie)
+    print("-" * 80)
     debbie.attack(gerald)
-    gerald.attack(debbie)
+    print("-" * 80)
     gerald.describe()
     debbie.describe()
