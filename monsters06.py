@@ -7,7 +7,7 @@
 #
 # That is, if object i is an instance of class C, then these are equivalent:
 #
-#   C.method(instance, argument)
+#   C.method(i, argument)
 #   i.method(argument)
 
 # See the full changes with:

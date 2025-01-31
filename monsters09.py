@@ -1,6 +1,6 @@
 # In this module we add a describe_attack method to each subclass of Monster.
 #
-# Notice how this means we can lose the big if/elif in Monster.damage.
+# Notice how this means we can lose the big if/elif in Monster.attack.
 
 # See the full changes with:
 #
